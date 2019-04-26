@@ -15,7 +15,7 @@ You must input your own API in the var "API" in the code to the tool works prope
 
 # Usage
 
-<pre>usage: pyhunter <<DOMAIN>></pre>
+<pre>usage: pyhunter.py DOMAIN </pre>
 
 # Example
 <pre>
