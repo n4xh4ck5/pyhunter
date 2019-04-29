@@ -75,6 +75,8 @@ Twitter:  @n4xh4ck5
 
 Web: fwhibbit.es
 
+Colaboration of @Guille_Hartek to translate python2 to python3
+
 # Disclamer
 
 The use of this tool is your responsability. I hereby disclaim any responsibility for actions taken with this tool.
