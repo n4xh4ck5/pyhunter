@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #Colaboratorion of @Guille_Hartek to translate python2 to python3
 """
 This script will return emails gathered from hunter.io given a target domain
@@ -103,8 +104,9 @@ def main():
     api = ""
     response = None
     emails = []
+    limit = 100 # by default limit=10
     try:
-        url = "https://api.hunter.io/v2/domain-search?domain="+target+"&api_key="+api
+        url = "https://api.hunter.io/v2/domain-search?domain="+target+"&api_key="+api+"&limit="+str(limit)
         #Sent request
         response = send_request(url)
         # Manage the response
