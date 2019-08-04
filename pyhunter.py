@@ -103,11 +103,12 @@ def main(argv):
 	banner()
 	target = str(sys.argv[1])
 	API=""
+	limit = 100 # By default limit = 10
 	r = None
 	emails = []
 	try:
 
-		url = "https://api.hunter.io/v2/domain-search?domain="+target+"&api_key="+API
+		url = "https://api.hunter.io/v2/domain-search?domain="+target+"&api_key="+API+"&limit="+str(limit)
 		#Sent request
 		r = send_request(url)
 		# Manage the response
