@@ -11,7 +11,7 @@ import xlsxwriter
 
 def export_results(emails):
     """
-    Exports the results into a XLSX file
+    Exportando los resultados a Excel (XLSX file) con el nombre emails.xlsx en carpeta del lenguaje
     """
     # Start from the first cell. Rows and columns are zero indexed.
     row = 0
@@ -20,17 +20,22 @@ def export_results(emails):
     try:
         print("Exporting the results in an excel")
         # Create a workbook and add a worksheet.
-        workbook = xlsxwriter.Workbook('hunter.xlsx')
+        workbook = xlsxwriter.Workbook('emails.xlsx')
         worksheet = workbook.add_worksheet()
-        worksheet.write(row, col, "email")
-        row += 1
-
-        # Iterate over the data and write it out row by row.
-        for email in emails:
-            col = 0
-            worksheet.write(row, col, email)
+        worksheet.set_column(0,0,30)
+        worksheet.set_column(1,1,40)
+        worksheet.set_column(2,2,100)
+        formato=workbook.add_format({'bold': True})
+        worksheet.write(row, 0, "Correo Electrónico", formato)
+        worksheet.write(row, 1, "Dominio", formato)
+        worksheet.write(row, 2, "URL", formato)
+        row = 1
+        fil=0
+        for cada in emails:
+            for j in range(0,3):
+                worksheet.write(row, j, emails[fil][j])
             row += 1
-            count += 1
+            fil += 1
 
         #Close the excel
         workbook.close()
@@ -46,11 +51,14 @@ def manage_response(data):
     emails = []
     try:
         for email in data['data']['emails']:
-            print("\n[*]Email: " + str(email['value']))
-            emails.append(str(email['value']))
+            print("\n[*]Email: " + str(email['value']+ str(email['sources'][0]['uri'])))
+            #emails.append(str(email['value']))
+            emails.append([str(email['value']),str(email['sources'][0]['domain']),str(email['sources'][0]['uri'])])
+        
     except Exception:
         print("Could not find any information about that")
         emails = "-"
+
     return emails
 
 
@@ -72,26 +80,12 @@ def banner():
     """
     print("\n")
     print("""
-                             /$$                             /$$                        
-                            | $$                            | $$                        
-          /$$$$$$  /$$   /$$| $$$$$$$  /$$   /$$ /$$$$$$$  /$$$$$$    /$$$$$$   /$$$$$$ 
-         /$$__  $$| $$  | $$| $$__  $$| $$  | $$| $$__  $$|_  $$_/   /$$__  $$ /$$__  $$
-        | $$  \\ $$| $$  | $$| $$  \\ $$| $$  | $$| $$  \\ $$  | $$    | $$$$$$$$| $$  \\__/
-        | $$  | $$| $$  | $$| $$  | $$| $$  | $$| $$  | $$  | $$ /$$| $$_____/| $$      
-        | $$$$$$$/|  $$$$$$$| $$  | $$|  $$$$$$/| $$  | $$  |  $$$$/|  $$$$$$$| $$      
-        | $$____/  \\____  $$|__/  |__/ \\______/ |__/  |__/   \\___/   \\_______/|__/      
-        | $$       /$$  | $$                                                            
-        | $$      |  $$$$$$/                                                           
-        |__/       \\______/                                                             
-        """)
 
-    print("""
-
-    ** Tool to search possible emails indexed throught API's Hunter.io (https://hunter.io)
-        ** Author: Ignacio Brihuega Rodriguez a.k.a N4xh4ck5
-        ** DISCLAMER This tool was developed for educational goals. 
-        ** The author is not responsible for using to others goals.
-        ** A high power, carries a high responsibility!
+    ** Herramienta para buscar emails con api Hunter)
+        ** Author: Ignacio Brihuega Rodriguez a.k.a N4xh4ck5-
+        ***Agregados 03/12/2019: @Saltaseg con mejora en la interfases y recolecta mas informacion
+        ** DISCLAMER: Esta herramienta está desarrollada con fines educativos. 
+        ** El autor no se responsabiliza por otros usos
         ** Version 1.0""")
 
 
@@ -100,8 +94,13 @@ def main():
     Main function of this tool
     """
     banner()
-    target = str(sys.argv[1])
+    #target = str(sys.argv[1])
+    print("INGRESE UN DOMINIO PARA BUSCAR CORREOS ELECTRONICOS:..(. sin http ni www)...")
+    print ("Dominio:")
+    target = input()
+    ##colocar aquí la api de hunter
     api = ""
+    ##
     response = None
     emails = []
     limit = 100 # by default limit=10
@@ -112,8 +111,11 @@ def main():
         # Manage the response
         emails = manage_response(response)
         #Export results
-        if emails != "-":
+        if emails != "-" and emails:
             export_results(emails)
+        else:
+            print("Sin Datos!!!!")
+       
     except Exception as exception:
         print("Error in main function" + str(exception))
 
