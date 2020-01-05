@@ -75,7 +75,7 @@ Twitter:  @n4xh4ck5
 
 Web: fwhibbit.es
 
-Colaboration of @Guille_Hartek to translate python2 to python3
+Colaboration of @Guille_Hartek to translate python2 to python3 and @saltaseg for interface Excel 
 
 # Disclamer
 
